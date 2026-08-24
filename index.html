@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <meta name="theme-color" content="#0d0c12" />
+  <title>SNATCH! | One more?</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main id="app" class="app-shell">
+    <section id="landing-screen" class="landing-screen" aria-hidden="false">
+      <div class="brand-lockup">
+        <div class="logo-claw" aria-hidden="true">S</div>
+        <h1>SNATCH!</h1>
+        <p class="tagline">ONE MORE?</p>
+      </div>
+
+      <div class="landing-copy">
+        <p>Roube o máximo que conseguir. Guarde antes do HEAT estourar. Ou arrisque só mais um.</p>
+      </div>
+
+      <div class="menu-actions">
+        <button id="daily-btn" class="btn btn-primary" type="button">TODAY'S HEIST</button>
+        <button id="free-btn" class="btn btn-secondary" type="button">FREE RUN</button>
+      </div>
+
+      <div class="how-to">
+        <span><b>1</b> Puxe para trás</span>
+        <span><b>2</b> Solte para lançar</span>
+        <span><b>3</b> Segure CASH OUT para salvar</span>
+      </div>
+
+      <p id="daily-note" class="daily-note"></p>
+    </section>
+
+    <section id="game-screen" class="game-screen" aria-hidden="true">
+      <aside class="side-panel side-left" aria-label="Resumo da partida">
+        <div class="side-brand">SNATCH!</div>
+        <div class="side-section">
+          <span class="side-label">MODO</span>
+          <strong id="side-mode">DAILY HEIST</strong>
+        </div>
+        <div class="side-section">
+          <span class="side-label">SEU MELHOR</span>
+          <strong id="personal-best">$0</strong>
+        </div>
+        <div class="side-section side-tip">
+          <span class="side-label">REGRA DE OURO</span>
+          <p>O BANKED é seu. O BAG está implorando para dar ruim.</p>
+        </div>
+      </aside>
+
+      <div class="arena-column">
+        <div id="arena" class="arena" data-world-bounds="0,0,1,1">
+          <canvas id="game-canvas" width="540" height="960" aria-label="Arena do SNATCH"></canvas>
+
+          <header class="hud-top" aria-live="polite">
+            <div class="hud-money banked-box">
+              <span>BANKED</span>
+              <strong id="banked">$0</strong>
+            </div>
+            <div class="hud-center">
+              <span id="mode-label">DAILY</span>
+              <strong id="timer">60.0s</strong>
+            </div>
+            <div class="hud-money bag-box">
+              <span>BAG</span>
+              <strong id="bag">$0</strong>
+            </div>
+          </header>
+
+          <div class="heat-wrap" aria-label="Heat">
+            <div class="heat-meta"><span>HEAT</span><strong id="heat-value">0</strong></div>
+            <div class="heat-track"><div id="heat-fill" class="heat-fill"></div></div>
+          </div>
+
+          <div class="multiplier" id="multiplier">x1</div>
+          <div id="toast" class="toast" aria-live="assertive"></div>
+          <div id="tutorial-hint" class="tutorial-hint">PUXE PARA TRÁS E SOLTE</div>
+          <div id="lockdown" class="lockdown" aria-hidden="true"><strong>BUST!</strong><span>BAG PERDIDO</span></div>
+
+          <button id="cashout-btn" class="cashout-btn" type="button" aria-label="Segure para fazer Cash Out">
+            <span class="cashout-progress" aria-hidden="true"></span>
+            <span class="cashout-copy"><b>CASH OUT</b><small>SEGURE 0.65s</small></span>
+          </button>
+        </div>
+      </div>
+
+      <aside class="side-panel side-right" aria-label="Contexto do desafio">
+        <div class="side-section">
+          <span class="side-label">DESAFIO</span>
+          <strong id="challenge-id">SNATCH #---</strong>
+        </div>
+        <div class="side-section">
+          <span class="side-label">CHAIN</span>
+          <strong id="side-chain">0 GRABS</strong>
+        </div>
+        <div class="side-section">
+          <span class="side-label">DICA</span>
+          <p>Multiplicador sobe quando você não faz Cash Out. Ganância tem juros.</p>
+        </div>
+      </aside>
+    </section>
+
+    <div id="decision-modal" class="modal" aria-hidden="true">
+      <div class="modal-card decision-card">
+        <p class="modal-kicker">TEMPO ESGOTADO</p>
+        <h2>ONE MORE?</h2>
+        <p>Seu BAG ainda vale <strong id="decision-bag">$0</strong>.</p>
+        <p class="decision-rule">Acertou: <b>2x e BANKED.</b><br />Errou: <b>perde o BAG.</b></p>
+        <div class="modal-actions">
+          <button id="safe-btn" class="btn btn-secondary" type="button">CASH OUT</button>
+          <button id="one-more-btn" class="btn btn-danger" type="button">ONE MORE</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="result-modal" class="modal" aria-hidden="true">
+      <div class="modal-card result-card">
+        <p id="result-kicker" class="modal-kicker">RUN COMPLETA</p>
+        <h2 id="result-score">$0</h2>
+        <div class="result-grid">
+          <span><small>GRABS</small><b id="result-grabs">0</b></span>
+          <span><small>BUSTS</small><b id="result-busts">0</b></span>
+          <span><small>MAX CHAIN</small><b id="result-chain">0</b></span>
+        </div>
+        <pre id="share-grid" class="share-grid" aria-label="Resumo compartilhável"></pre>
+        <div class="modal-actions stacked-mobile">
+          <button id="share-btn" class="btn btn-secondary" type="button">SHARE RESULT</button>
+          <button id="again-btn" class="btn btn-primary" type="button">PLAY AGAIN</button>
+        </div>
+        <button id="home-btn" class="text-btn" type="button">voltar ao menu</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="./src/core.js"></script>
+  <script src="./src/input.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
