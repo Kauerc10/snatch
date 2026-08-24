@@ -39,8 +39,3 @@ Este é o Milestone A, focado em game feel. Ainda não há backend, leaderboard 
 O MVP é 100% estático e sem dependências de runtime. No Vercel, basta importar o repositório e manter **Framework Preset: Other**. Não há build command nem output directory obrigatórios.
 
 O arquivo `vercel.json` adiciona clean URLs e headers básicos de segurança.
-
-## Documentação
-
-- Spec aprovada: `docs/superpowers/specs/2026-08-24-snatch-daily-heist-design.md`
-- Plano de implementação: `docs/superpowers/plans/2026-08-24-snatch-mvp-implementation-plan.md`
