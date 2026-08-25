@@ -197,17 +197,19 @@
     return challenge;
   }
 
+  const ARENA_ASPECT = 16 / 9;
+
   function segmentCircleHit(a, b, c, radius) {
     const abx = b.x - a.x;
-    const aby = b.y - a.y;
+    const aby = (b.y - a.y) * ARENA_ASPECT;
     const acx = c.x - a.x;
-    const acy = c.y - a.y;
+    const acy = (c.y - a.y) * ARENA_ASPECT;
     const denom = abx * abx + aby * aby;
     const t = denom === 0 ? 0 : Math.max(0, Math.min(1, (acx * abx + acy * aby) / denom));
-    const px = a.x + abx * t;
-    const py = a.y + aby * t;
+    const px = a.x + (b.x - a.x) * t;
+    const py = a.y + (b.y - a.y) * t;
     const dx = c.x - px;
-    const dy = c.y - py;
+    const dy = (c.y - py) * ARENA_ASPECT;
     return dx * dx + dy * dy <= radius * radius;
   }
 
@@ -230,9 +232,9 @@
 
   function projectionT(shot, point) {
     const abx = shot.end.x - shot.start.x;
-    const aby = shot.end.y - shot.start.y;
+    const aby = (shot.end.y - shot.start.y) * ARENA_ASPECT;
     const denom = abx * abx + aby * aby || 1;
-    return ((point.x - shot.start.x) * abx + (point.y - shot.start.y) * aby) / denom;
+    return ((point.x - shot.start.x) * abx + (point.y - shot.start.y) * ARENA_ASPECT * aby) / denom;
   }
 
   function pickFirstHit(shot, targets) {

@@ -95,3 +95,10 @@ test('pickFirstHit chooses the nearest intercepted target', () => {
   ];
   assert.equal(core.pickFirstHit(shot, targets).id, 'near');
 });
+
+test('collision distances are aspect-correct for the 9:16 arena', () => {
+  const shotA = { x: 0.1, y: 0.5 };
+  const shotB = { x: 0.9, y: 0.5 };
+  const visuallyMissed = { x: 0.5, y: 0.52 };
+  assert.equal(core.segmentCircleHit(shotA, shotB, visuallyMissed, 0.03), false);
+});

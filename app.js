@@ -22,7 +22,7 @@
   };
 
   const ctx = refs.canvas.getContext('2d');
-  const BASE = Object.freeze({ x: 0.5, y: 0.885 });
+  const BASE = Object.freeze({ x: 0.5, y: 0.79 });
   const OUTBOUND_SPEED = 1.55;
   const RETURN_SPEED = 2.05;
   const FINAL_WINDOW_MS = 5200;
