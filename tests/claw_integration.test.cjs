@@ -35,3 +35,18 @@ test('One More still accepts aiming after the 60s round timer expired', () => {
   assert.doesNotMatch(startAim, /game\.finished \|\| game\.timerExpired\) return/);
   assert.match(startAim, /game\.timerExpired && game\.state\.phase !== 'one-more-attempt'/);
 });
+
+test('expired deadlines cancel uncommitted aiming without aborting committed claw flights', () => {
+  const app = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
+  assert.match(app, /function cancelAim\(/);
+  assert.match(app, /game\.timerExpired && game\.claw\.phase === 'aiming'/);
+  assert.match(app, /remaining <= 0 && !game\.oneMore\.shotCommitted/);
+  assert.match(app, /cancelAim\(\)/);
+});
+
+test('latched One More loot is not drawn twice while returning', () => {
+  const app = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
+  const drawFinal = app.slice(app.indexOf('function drawOneMoreTarget'), app.indexOf('function drawLoot'));
+  assert.match(drawFinal, /game\.claw\.oneMore && game\.claw\.carrying/);
+  assert.match(drawFinal, /return/);
+});
