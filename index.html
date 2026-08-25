@@ -3,10 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
-  <meta name="theme-color" content="#0d0c12" />
-  <title>SNATCH! | One more?</title>
+  <meta name="theme-color" content="#0c0b12" />
+  <title>SNATCH! | The Claw Update</title>
   <link rel="stylesheet" href="./styles.css" />
-  <link rel="stylesheet" href="./v02.css" />
 </head>
 <body>
   <main id="app" class="app-shell">
@@ -14,11 +13,11 @@
       <div class="brand-lockup">
         <div class="logo-claw" aria-hidden="true">S</div>
         <h1>SNATCH!</h1>
-        <p class="tagline">ONE MORE?</p>
+        <p class="tagline">THE CLAW UPDATE</p>
       </div>
 
       <div class="landing-copy">
-        <p>Todo mundo recebe o mesmo assalto. Roube, acumule pressão e decida quando parar.</p>
+        <p>Todo mundo recebe o mesmo assalto. Lance a garra, capture loot absurdo e decida até onde a ganância vai.</p>
       </div>
 
       <div class="daily-hero" aria-label="Desafio diário">
@@ -40,7 +39,7 @@
 
       <div class="how-to">
         <span><b>1</b> Puxe para trás</span>
-        <span><b>2</b> Solte para lançar</span>
+        <span><b>2</b> Solte para lançar a garra</span>
         <span><b>3</b> Segure CASH OUT para salvar</span>
       </div>
 
@@ -60,13 +59,14 @@
         </div>
         <div class="side-section side-tip">
           <span class="side-label">REGRA DE OURO</span>
-          <p>O BANKED é seu. O BAG está implorando para dar ruim.</p>
+          <p>O BANKED é seu. O BAG está pedindo para dar ruim.</p>
         </div>
       </aside>
 
       <div class="arena-column">
-        <div id="arena" class="arena" data-world-bounds="0,0,1,1">
+        <div id="arena" class="arena">
           <canvas id="game-canvas" width="540" height="960" aria-label="Arena do SNATCH"></canvas>
+          <div class="vignette" id="tension-vignette" aria-hidden="true"></div>
 
           <header class="hud-top" aria-live="polite">
             <div class="hud-money banked-box">
@@ -97,6 +97,11 @@
           <div id="tutorial-hint" class="tutorial-hint">PUXE PARA TRÁS E SOLTE</div>
           <div id="lockdown" class="lockdown" aria-hidden="true"><strong>BUST!</strong><span>BAG PERDIDO</span></div>
 
+          <div class="bag-tray-wrap">
+            <span class="bag-tray-label">BAG</span>
+            <div id="bag-tray" class="bag-tray"></div>
+          </div>
+
           <button id="cashout-btn" class="cashout-btn" type="button" aria-label="Segure para fazer Cash Out">
             <span class="cashout-progress" aria-hidden="true"></span>
             <span class="cashout-copy"><b>CASH OUT</b><small>SEGURE 0.65s</small></span>
@@ -114,8 +119,8 @@
           <strong id="side-chain">0 GRABS</strong>
         </div>
         <div class="side-section">
-          <span class="side-label">DICA</span>
-          <p>Multiplicador sobe quando você não faz Cash Out. Ganância tem juros.</p>
+          <span class="side-label">ÚLTIMO LOOT</span>
+          <p id="last-loot">--</p>
         </div>
       </aside>
     </section>
@@ -125,10 +130,10 @@
         <p class="modal-kicker">TEMPO ESGOTADO</p>
         <h2>ONE MORE?</h2>
         <p>Seu BAG ainda vale <strong id="decision-bag">$0</strong>.</p>
-        <div class="one-more-object" aria-hidden="true">?</div>
+        <div class="one-more-object" id="one-more-object" aria-hidden="true">?</div>
         <p class="decision-rule">Acertou o último alvo: <b>2x e BANKED.</b><br />Errou: <b>perde o BAG inteiro.</b></p>
         <div class="modal-actions">
-          <button id="safe-btn" class="btn btn-secondary" type="button">CASH OUT</button>
+          <button id="safe-btn" class="btn btn-secondary" type="button">BANK</button>
           <button id="one-more-btn" class="btn btn-danger" type="button">ONE MORE</button>
         </div>
       </div>
@@ -155,9 +160,8 @@
 
   <script src="./src/core.js"></script>
   <script src="./src/risk.js"></script>
-  <script>window.SnatchRisk.install(window.SnatchCore);</script>
   <script src="./src/input.js"></script>
+  <script src="./src/claw.js"></script>
   <script src="./app.js"></script>
-  <script src="./polish.js"></script>
 </body>
 </html>
