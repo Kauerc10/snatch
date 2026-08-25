@@ -1,4 +1,4 @@
-# SNATCH! MVP
+# SNATCH! MVP v0.2
 
 Greybox jogável do loop principal aprovado: `grab -> risk -> cash out -> bust / One More -> replay`.
 
@@ -8,6 +8,7 @@ Não há dependências externas.
 
 ```bash
 npm test
+npm run test:browser
 python3 -m http.server 4173
 ```
 
@@ -18,7 +19,7 @@ Também funciona abrindo `index.html` diretamente em navegadores que permitem sc
 ## Controles
 
 - Arraste no canvas para trás da garra e solte para lançar.
-- Cada acerto coloca valor no BAG e aumenta HEAT/chain.
+- Cada acerto coloca valor no BAG e aumenta HEAT/chain. Em HEAT alto, o `RISK PAYOUT` recompensa a ganância (+10% HOT / +25% CRITICAL).
 - Segure CASH OUT por 650 ms para mover BAG para BANKED.
 - Se HEAT chegar a 100, o BAG é perdido e o BANKED permanece seguro.
 - Ao final de 60 s, se ainda houver BAG, escolha entre salvar ou tentar ONE MORE.
@@ -32,10 +33,15 @@ Também funciona abrindo `index.html` diretamente em navegadores que permitem sc
 
 ## Limites intencionais
 
-Este é o Milestone A, focado em game feel. Ainda não há backend, leaderboard global, anti-cheat remoto, contas, coleção/Fuse nem arte final. A tentativa diária é protegida apenas por `localStorage`, suficiente para validar o loop, não para produção competitiva.
+Este é o Milestone A.2, focado em tornar risco, recompensa e tomada de decisão legíveis em segundos. Ainda não há backend, leaderboard global, anti-cheat remoto, contas, coleção/Fuse nem arte final. A tentativa diária é protegida apenas por `localStorage`, suficiente para validar o loop, não para produção competitiva.
 
 ## Deploy
 
 O MVP é 100% estático e sem dependências de runtime. No Vercel, basta importar o repositório e manter **Framework Preset: Other**. Não há build command nem output directory obrigatórios.
 
 O arquivo `vercel.json` adiciona clean URLs e headers básicos de segurança.
+
+## Documentação
+
+- Spec aprovada: `docs/superpowers/specs/2026-08-24-snatch-daily-heist-design.md`
+- Plano de implementação: `docs/superpowers/plans/2026-08-24-snatch-mvp-implementation-plan.md`
