@@ -1,47 +1,43 @@
-# SNATCH! MVP v0.2
+# SNATCH! v0.4 — Gameplay Rebuild
 
-Greybox jogável do loop principal aprovado: `grab -> risk -> cash out -> bust / One More -> replay`.
+SNATCH is a browser-first arcade Daily Heist about timing, greed and knowing when to bank what you stole.
 
-## Rodar
+## v0.4 direction
 
-Não há dependências externas.
+The AI Studio prototype is the benchmark for moment-to-moment claw feel. The official rebuild keeps the stronger SNATCH product/visual decisions while moving realtime play to Phaser and keeping authoritative rules in a pure fixed-step TypeScript simulation.
+
+### Controls
+
+- **Desktop:** move the mouse to aim directly, click to launch.
+- **Touch:** touch/drag directly toward the shot, release to launch.
+- The pointer chooses an **angle**, not an item. Loot keeps moving while the claw travels.
+- **BANK $X:** one click/tap when the claw is home.
+
+### Core loop
+
+`aim → launch → intercept → latch → return → secure → risk → BANK or keep going`
+
+The canonical world is 540×960, the simulation runs at 120 logical Hz, and the Daily is 60 seconds. BAG is exposed; BANKED survives BUST. ONE MORE uses the exact same physical claw simulation.
+
+## Architecture
+
+- `lib/game/sim/*` — authoritative deterministic simulation. No Phaser/React/DOM.
+- `lib/game/phaser/*` — scene presentation, pointer adapter, audio and FX.
+- `components/game/*` — React HUD and game host.
+- `app/*` — product shell and Daily entry flow.
+
+## Commands
 
 ```bash
-npm test
-npm run test:browser
-python3 -m http.server 4173
+npm install
+npm run test
+npm run typecheck
+npm run dev
+npm run test:e2e
+npm run build
 ```
 
-Abra `http://localhost:4173` no navegador.
+## Docs
 
-Também funciona abrindo `index.html` diretamente em navegadores que permitem scripts locais.
-
-## Controles
-
-- Arraste no canvas para trás da garra e solte para lançar.
-- Cada acerto coloca valor no BAG e aumenta HEAT/chain. Em HEAT alto, o `RISK PAYOUT` recompensa a ganância (+10% HOT / +25% CRITICAL).
-- Segure CASH OUT por 650 ms para mover BAG para BANKED.
-- Se HEAT chegar a 100, o BAG é perdido e o BANKED permanece seguro.
-- Ao final de 60 s, se ainda houver BAG, escolha entre salvar ou tentar ONE MORE.
-
-## Modos deste MVP
-
-- Quick Practice na primeira visita.
-- Daily Heist determinístico por data, com uma tentativa oficial local por dia.
-- Practice Daily após consumir o Daily.
-- Free Run procedural.
-
-## Limites intencionais
-
-Este é o Milestone A.2, focado em tornar risco, recompensa e tomada de decisão legíveis em segundos. Ainda não há backend, leaderboard global, anti-cheat remoto, contas, coleção/Fuse nem arte final. A tentativa diária é protegida apenas por `localStorage`, suficiente para validar o loop, não para produção competitiva.
-
-## Deploy
-
-O MVP é 100% estático e sem dependências de runtime. No Vercel, basta importar o repositório e manter **Framework Preset: Other**. Não há build command nem output directory obrigatórios.
-
-O arquivo `vercel.json` adiciona clean URLs e headers básicos de segurança.
-
-## Documentação
-
-- Spec aprovada: `docs/superpowers/specs/2026-08-24-snatch-daily-heist-design.md`
-- Plano de implementação: `docs/superpowers/plans/2026-08-24-snatch-mvp-implementation-plan.md`
+- `docs/superpowers/specs/2026-08-25-snatch-v04-gameplay-rebuild-design.md`
+- `docs/superpowers/plans/2026-08-25-snatch-v04-gameplay-rebuild.md`
