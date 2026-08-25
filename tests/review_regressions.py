@@ -78,9 +78,26 @@ def test_late_bust_still_reaches_round_end():
         browser.close()
 
 
+def test_held_aim_cannot_extend_ranked_round_deadline():
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True, executable_path='/usr/bin/chromium', args=['--no-sandbox'])
+        page = browser.new_page(viewport={'width': 390, 'height': 844})
+        page.clock.install(time=datetime(2026, 8, 25, 12, 0, 0, tzinfo=timezone.utc))
+        mount(page, onboarded=True)
+        page.locator('#daily-btn').click()
+        box = page.locator('#game-canvas').bounding_box()
+        page.mouse.move(box['x'] + box['width'] * .5, box['y'] + box['height'] * .72)
+        page.mouse.down()
+        page.clock.fast_forward(61000)
+        assert page.locator('#result-modal').get_attribute('aria-hidden') == 'false'
+        page.mouse.up()
+        browser.close()
+
+
 if __name__ == '__main__':
     test_ranked_daily_is_reserved_at_start()
     test_daily_keeps_start_date_across_utc_midnight()
     test_collision_matches_visible_9_by_16_radius()
     test_late_bust_still_reaches_round_end()
+    test_held_aim_cannot_extend_ranked_round_deadline()
     print('review regressions: PASS')
