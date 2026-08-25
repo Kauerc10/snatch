@@ -209,6 +209,13 @@
     };
   }
 
+  function cancelAim() {
+    const game = app.game;
+    app.pointerDown = false;
+    app.drag = null;
+    if (game?.claw.phase === 'aiming') game.claw = createIdleClaw();
+  }
+
   function radiusFor(item) {
     if (item.rarity === 'wtf') return .044;
     if (item.rarity === 'mythic') return .048;
@@ -627,6 +634,7 @@
     game.elapsed = Math.min(game.realElapsed, game.config.duration);
     game.state.elapsedMs = game.elapsed;
     game.timerExpired = game.realElapsed >= game.config.duration;
+    if (game.timerExpired && game.claw.phase === 'aiming' && game.state.phase !== 'one-more-attempt') cancelAim();
 
     syncLockdown(now);
     updateCashout(now);
@@ -635,7 +643,10 @@
     if (game.state.phase === 'one-more-attempt' && game.oneMore) {
       const remaining = Math.max(0, game.oneMore.deadlineAt - now);
       refs.timer.textContent = `${(remaining / 1000).toFixed(1)}s`;
-      if (remaining <= 0 && !game.oneMore.shotCommitted && game.claw.phase === 'idle') finishOneMore(false);
+      if (remaining <= 0 && !game.oneMore.shotCommitted) {
+        if (game.claw.phase === 'aiming') cancelAim();
+        if (game.claw.phase === 'idle') finishOneMore(false);
+      }
     } else {
       refs.timer.textContent = `${Math.max(0, (game.config.duration - game.elapsed) / 1000).toFixed(1)}s`;
     }
@@ -706,6 +717,7 @@
   function drawOneMoreTarget(w, h, now) {
     const game = app.game;
     if (!game?.oneMore?.target) return;
+    if (game.claw.oneMore && game.claw.carrying) return;
     const elapsed = Math.max(0, now - game.oneMore.startedAt);
     const p = oneMoreTargetAt(game.oneMore.target, elapsed);
     drawLoot(game.oneMore.target.item, p.x*w, p.y*h, .044*w, true);
@@ -826,11 +838,7 @@
     if (!app.pointerDown) return;
     releaseAim(canvasPoint(e));
   });
-  refs.canvas.addEventListener('pointercancel', () => {
-    app.pointerDown = false;
-    app.drag = null;
-    if (app.game?.claw.phase === 'aiming') app.game.claw = createIdleClaw();
-  });
+  refs.canvas.addEventListener('pointercancel', cancelAim);
 
   refs.cashout.addEventListener('pointerdown', (e) => {
     if (!app.game || refs.cashout.disabled) return;
