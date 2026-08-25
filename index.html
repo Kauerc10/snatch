@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#0d0c12" />
   <title>SNATCH! | One more?</title>
   <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./v02.css" />
 </head>
 <body>
   <main id="app" class="app-shell">
@@ -17,7 +18,19 @@
       </div>
 
       <div class="landing-copy">
-        <p>Roube o máximo que conseguir. Guarde antes do HEAT estourar. Ou arrisque só mais um.</p>
+        <p>Todo mundo recebe o mesmo assalto. Roube, acumule pressão e decida quando parar.</p>
+      </div>
+
+      <div class="daily-hero" aria-label="Desafio diário">
+        <div>
+          <span class="daily-hero-label">DESAFIO DE HOJE</span>
+          <strong id="landing-challenge">SNATCH #---</strong>
+        </div>
+        <div class="daily-hero-meta">
+          <span><b>60s</b> uma run</span>
+          <span><b>1 seed</b> para todos</span>
+          <span><b id="landing-best">$0</b> seu recorde</span>
+        </div>
       </div>
 
       <div class="menu-actions">
@@ -71,8 +84,12 @@
           </header>
 
           <div class="heat-wrap" aria-label="Heat">
-            <div class="heat-meta"><span>HEAT</span><strong id="heat-value">0</strong></div>
+            <div class="heat-meta">
+              <span>HEAT <b id="heat-status">COOL</b></span>
+              <strong id="heat-value">0</strong>
+            </div>
             <div class="heat-track"><div id="heat-fill" class="heat-fill"></div></div>
+            <div class="risk-row"><span id="risk-bonus">PRESSURE BONUS OFF</span><span>100 = BUST</span></div>
           </div>
 
           <div class="multiplier" id="multiplier">x1</div>
@@ -108,7 +125,8 @@
         <p class="modal-kicker">TEMPO ESGOTADO</p>
         <h2>ONE MORE?</h2>
         <p>Seu BAG ainda vale <strong id="decision-bag">$0</strong>.</p>
-        <p class="decision-rule">Acertou: <b>2x e BANKED.</b><br />Errou: <b>perde o BAG.</b></p>
+        <div class="one-more-object" aria-hidden="true">?</div>
+        <p class="decision-rule">Acertou o último alvo: <b>2x e BANKED.</b><br />Errou: <b>perde o BAG inteiro.</b></p>
         <div class="modal-actions">
           <button id="safe-btn" class="btn btn-secondary" type="button">CASH OUT</button>
           <button id="one-more-btn" class="btn btn-danger" type="button">ONE MORE</button>
@@ -136,7 +154,10 @@
   </main>
 
   <script src="./src/core.js"></script>
+  <script src="./src/risk.js"></script>
+  <script>window.SnatchRisk.install(window.SnatchCore);</script>
   <script src="./src/input.js"></script>
   <script src="./app.js"></script>
+  <script src="./polish.js"></script>
 </body>
 </html>
